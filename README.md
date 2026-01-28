@@ -1,3 +1,4 @@
+
 # SportWebApp Backend
 
 Production-ready Node.js + Express backend built with TypeScript, MySQL, and Redis.
@@ -43,3 +44,26 @@ The server will start on `http://localhost:4000` by default.
 npm run build
 npm start
 ```
+=======
+# SportWebApp API
+
+Professional Node.js + Express backend setup.
+
+## Getting Started
+
+```bash
+npm install
+npm run dev
+```
+
+## Environment Variables
+
+Copy `.env.example` to `.env` and update values as needed.
+
+## Scripts
+
+- `npm run dev` - start with nodemon
+- `npm run start` - start in production mode
+- `npm run lint` - run eslint
+- `npm run format` - run prettier
+
