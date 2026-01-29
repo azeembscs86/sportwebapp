@@ -1,27 +1,28 @@
-const express = require("express");
-const cors = require("cors");
-const helmet = require("helmet");
-const morgan = require("morgan");
+import express from "express";
+import helmet from "helmet";
+import morgan from "morgan";
+import { errorHandler } from "./middlewares/errorHandler";
+import healthRoutes from "./routes/healthRoutes";
+import echoRoutes from "./routes/echoRoutes";
+import bannerRoutes from "./routes/bannerRoutes";
+import { logger } from "./utils/logger";
 
 const app = express();
 
 app.use(helmet());
-app.use(cors());
 app.use(express.json());
-app.use(morgan("combined"));
+app.use(
+  morgan("combined", {
+    stream: {
+      write: (message) => logger.info(message.trim())
+    }
+  })
+);
 
-app.get("/health", (_req, res) => {
-  res.status(200).json({ status: "ok" });
-});
+app.use(healthRoutes);
+app.use("/api", echoRoutes);
+app.use("/api", bannerRoutes);
 
-app.use((req, res) => {
-  res.status(404).json({ error: "Not Found", path: req.originalUrl });
-});
+app.use(errorHandler);
 
-app.use((err, _req, res, _next) => {
-  // eslint-disable-next-line no-console
-  console.error(err);
-  res.status(500).json({ error: "Internal Server Error" });
-});
-
-module.exports = app;
+export default app;
