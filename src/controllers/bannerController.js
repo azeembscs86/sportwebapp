@@ -1,4 +1,3 @@
-import { NextFunction, Request, Response } from "express";
 import {
   addBanner,
   editBanner,
@@ -6,12 +5,15 @@ import {
   listBanners,
   listOnlineBanners,
   removeBanner
-} from "../services/bannerService";
+} from "../services/bannerService.js";
 
+/**
+ * Handle request to list all banners.
+ */
 export const getAllBanners = async (
-  _request: Request,
-  response: Response,
-  next: NextFunction
+  _request,
+  response,
+  next
 ) => {
   try {
     const banners = await listBanners();
@@ -21,10 +23,13 @@ export const getAllBanners = async (
   }
 };
 
+/**
+ * Handle request to list online banners.
+ */
 export const getOnlineBannerList = async (
-  _request: Request,
-  response: Response,
-  next: NextFunction
+  _request,
+  response,
+  next
 ) => {
   try {
     const banners = await listOnlineBanners();
@@ -34,10 +39,13 @@ export const getOnlineBannerList = async (
   }
 };
 
+/**
+ * Handle request to create a banner.
+ */
 export const createBannerHandler = async (
-  request: Request,
-  response: Response,
-  next: NextFunction
+  request,
+  response,
+  next
 ) => {
   try {
     const { bannerUrl, isOnline } = request.body;
@@ -48,10 +56,13 @@ export const createBannerHandler = async (
   }
 };
 
+/**
+ * Handle request to update a banner.
+ */
 export const updateBannerHandler = async (
-  request: Request,
-  response: Response,
-  next: NextFunction
+  request,
+  response,
+  next
 ) => {
   try {
     const { bannerId } = request.params;
@@ -66,10 +77,13 @@ export const updateBannerHandler = async (
   }
 };
 
+/**
+ * Handle request to delete a banner.
+ */
 export const deleteBannerHandler = async (
-  request: Request,
-  response: Response,
-  next: NextFunction
+  request,
+  response,
+  next
 ) => {
   try {
     const { bannerId } = request.params;
@@ -83,10 +97,13 @@ export const deleteBannerHandler = async (
   }
 };
 
+/**
+ * Handle request to fetch a banner by id.
+ */
 export const getBannerByIdHandler = async (
-  request: Request,
-  response: Response,
-  next: NextFunction
+  request,
+  response,
+  next
 ) => {
   try {
     const { bannerId } = request.params;

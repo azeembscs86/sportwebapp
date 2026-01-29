@@ -1,6 +1,10 @@
-import { mysqlPool } from "../config/database";
-import { redisClient } from "../config/redis";
+import { mysqlPool } from "../config/database.js";
+import { redisClient } from "../config/redis.js";
 
+/**
+ * Ping MySQL to verify connectivity.
+ * @returns {Promise<"up">}
+ */
 export const checkMysql = async () => {
   const connection = await mysqlPool.getConnection();
   try {
@@ -11,6 +15,10 @@ export const checkMysql = async () => {
   }
 };
 
+/**
+ * Ping Redis to verify connectivity.
+ * @returns {Promise<"up">}
+ */
 export const checkRedis = async () => {
   if (!redisClient.isOpen) {
     await redisClient.connect();

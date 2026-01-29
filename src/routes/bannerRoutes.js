@@ -7,8 +7,8 @@ import {
   getBannerByIdHandler,
   getOnlineBannerList,
   updateBannerHandler
-} from "../controllers/bannerController";
-import { validateRequest } from "../middlewares/validateRequest";
+} from "../controllers/bannerController.js";
+import { validateRequest } from "../middlewares/validateRequest.js";
 
 const router = Router();
 
@@ -25,15 +25,21 @@ const bannerIdSchema = z.object({
   })
 });
 
+/** List all banners. */
 router.get("/banners", getAllBanners);
+/** List online banners. */
 router.get("/banners/online", getOnlineBannerList);
+/** Fetch a banner by id. */
 router.get("/banners/:bannerId", validateRequest(bannerIdSchema), getBannerByIdHandler);
+/** Create a banner. */
 router.post("/banners", validateRequest(bannerPayloadSchema), createBannerHandler);
+/** Update a banner. */
 router.put(
   "/banners/:bannerId",
   validateRequest(bannerIdSchema.merge(bannerPayloadSchema)),
   updateBannerHandler
 );
+/** Delete a banner. */
 router.delete("/banners/:bannerId", validateRequest(bannerIdSchema), deleteBannerHandler);
 
 export default router;

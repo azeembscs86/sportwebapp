@@ -42,6 +42,11 @@ The server will start on `http://localhost:4000` by default.
 - `POST /api/banners` — create a banner with `{ "bannerUrl": "https://...", "isOnline": true }`.
 - `PUT /api/banners/:bannerId` — update a banner.
 - `DELETE /api/banners/:bannerId` — delete a banner.
+- `GET /api/app-settings` — list app settings (cached via Redis).
+- `GET /api/app-settings/:id` — fetch an app setting by id.
+- `POST /api/app-settings` — create an app setting with `{ "platform": "ios", "isOnline": true }`.
+- `PUT /api/app-settings/:id` — update an app setting.
+- `DELETE /api/app-settings/:id` — delete an app setting.
 
 ## Production build
 ```bash

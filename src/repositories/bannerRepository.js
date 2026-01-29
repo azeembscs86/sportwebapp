@@ -1,14 +1,10 @@
-import { mysqlPool } from "../config/database";
-import { BannerModel } from "../models/bannerModel";
+import { mysqlPool } from "../config/database.js";
+import { mapRowToBanner } from "../models/bannerModel.js";
 
-const mapRowToBanner = (row: any): BannerModel => ({
-  bannerId: row.BannerId,
-  bannerUrl: row.BannerUrl,
-  isOnline: Boolean(row.IsOnline),
-  createdDate: new Date(row.CreatedDate),
-  updateDate: new Date(row.UpdateDate)
-});
-
+/**
+ * Ensure the Banners table exists in MySQL.
+ * @returns {Promise<void>}
+ */
 export const createBannerTable = async () => {
   const query = `
     CREATE TABLE IF NOT EXISTS Banners (
@@ -23,22 +19,31 @@ export const createBannerTable = async () => {
   await mysqlPool.execute(query);
 };
 
-export const createBanner = async (bannerUrl: string, isOnline: boolean) => {
+/**
+ * Insert a new banner record.
+ * @param {string} bannerUrl - Banner URL.
+ * @param {boolean} isOnline - Online flag.
+ * @returns {Promise<object|null>}
+ */
+export const createBanner = async (bannerUrl, isOnline) => {
   const query = `
     INSERT INTO Banners (BannerUrl, IsOnline)
     VALUES (?, ?)
   `;
 
   const [result] = await mysqlPool.execute(query, [bannerUrl, isOnline ? 1 : 0]);
-  const insertId = (result as any).insertId as number;
+  const insertId = result.insertId;
   return getBannerById(insertId);
 };
 
-export const updateBanner = async (
-  bannerId: number,
-  bannerUrl: string,
-  isOnline: boolean
-) => {
+/**
+ * Update an existing banner record.
+ * @param {number} bannerId - Banner id.
+ * @param {string} bannerUrl - Banner URL.
+ * @param {boolean} isOnline - Online flag.
+ * @returns {Promise<object|null>}
+ */
+export const updateBanner = async (bannerId, bannerUrl, isOnline) => {
   const query = `
     UPDATE Banners
     SET BannerUrl = ?, IsOnline = ?
@@ -49,16 +54,25 @@ export const updateBanner = async (
   return getBannerById(bannerId);
 };
 
-export const deleteBanner = async (bannerId: number) => {
+/**
+ * Delete a banner record.
+ * @param {number} bannerId - Banner id.
+ * @returns {Promise<number>}
+ */
+export const deleteBanner = async (bannerId) => {
   const query = `
     DELETE FROM Banners
     WHERE BannerId = ?
   `;
 
   const [result] = await mysqlPool.execute(query, [bannerId]);
-  return (result as any).affectedRows as number;
+  return result.affectedRows;
 };
 
+/**
+ * Fetch all banners.
+ * @returns {Promise<object[]>}
+ */
 export const getBanners = async () => {
   const query = `
     SELECT BannerId, BannerUrl, IsOnline, CreatedDate, UpdateDate
@@ -67,9 +81,13 @@ export const getBanners = async () => {
   `;
 
   const [rows] = await mysqlPool.query(query);
-  return (rows as any[]).map(mapRowToBanner);
+  return rows.map(mapRowToBanner);
 };
 
+/**
+ * Fetch only online banners.
+ * @returns {Promise<object[]>}
+ */
 export const getOnlineBanners = async () => {
   const query = `
     SELECT BannerId, BannerUrl, IsOnline, CreatedDate, UpdateDate
@@ -79,10 +97,15 @@ export const getOnlineBanners = async () => {
   `;
 
   const [rows] = await mysqlPool.query(query);
-  return (rows as any[]).map(mapRowToBanner);
+  return rows.map(mapRowToBanner);
 };
 
-export const getBannerById = async (bannerId: number) => {
+/**
+ * Fetch a single banner by id.
+ * @param {number} bannerId - Banner id.
+ * @returns {Promise<object|null>}
+ */
+export const getBannerById = async (bannerId) => {
   const query = `
     SELECT BannerId, BannerUrl, IsOnline, CreatedDate, UpdateDate
     FROM Banners
@@ -91,6 +114,6 @@ export const getBannerById = async (bannerId: number) => {
   `;
 
   const [rows] = await mysqlPool.query(query, [bannerId]);
-  const [row] = rows as any[];
+  const [row] = rows;
   return row ? mapRowToBanner(row) : null;
 };

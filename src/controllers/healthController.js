@@ -1,10 +1,12 @@
-import { Request, Response, NextFunction } from "express";
-import { getHealthStatus } from "../services/healthService";
+import { getHealthStatus } from "../services/healthService.js";
 
+/**
+ * Handle request for system health check.
+ */
 export const healthCheck = async (
-  _request: Request,
-  response: Response,
-  next: NextFunction
+  _request,
+  response,
+  next
 ) => {
   try {
     const status = await getHealthStatus();

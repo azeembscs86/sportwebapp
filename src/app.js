@@ -1,11 +1,12 @@
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
-import { errorHandler } from "./middlewares/errorHandler";
-import healthRoutes from "./routes/healthRoutes";
-import echoRoutes from "./routes/echoRoutes";
-import bannerRoutes from "./routes/bannerRoutes";
-import { logger } from "./utils/logger";
+import { errorHandler } from "./middlewares/errorHandler.js";
+import healthRoutes from "./routes/healthRoutes.js";
+import echoRoutes from "./routes/echoRoutes.js";
+import bannerRoutes from "./routes/bannerRoutes.js";
+import appSettingsRoutes from "./routes/appSettingsRoutes.js";
+import { logger } from "./utils/logger.js";
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(
 app.use(healthRoutes);
 app.use("/api", echoRoutes);
 app.use("/api", bannerRoutes);
+app.use("/api", appSettingsRoutes);
 
 app.use(errorHandler);
 

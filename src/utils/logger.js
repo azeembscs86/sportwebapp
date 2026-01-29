@@ -1,13 +1,24 @@
-import { env } from "../config/env";
+import { env } from "../config/env.js";
 
-const levels = ["error", "warn", "info", "debug"] as const;
-type LogLevel = (typeof levels)[number];
+const levels = ["error", "warn", "info", "debug"];
 
-const levelIndex = levels.indexOf(env.LOG_LEVEL as LogLevel);
+const levelIndex = levels.indexOf(env.LOG_LEVEL);
 
-const shouldLog = (level: LogLevel) => levels.indexOf(level) <= levelIndex;
+/**
+ * Determine whether a log level should be emitted.
+ * @param {string} level - Log level.
+ * @returns {boolean}
+ */
+const shouldLog = (level) => levels.indexOf(level) <= levelIndex;
 
-const formatMessage = (level: LogLevel, message: string, meta?: unknown) => {
+/**
+ * Format a log message as JSON.
+ * @param {string} level - Log level.
+ * @param {string} message - Log message.
+ * @param {unknown} meta - Optional metadata.
+ * @returns {string}
+ */
+const formatMessage = (level, message, meta) => {
   const base = {
     level,
     message,
@@ -21,23 +32,46 @@ const formatMessage = (level: LogLevel, message: string, meta?: unknown) => {
   return JSON.stringify(base);
 };
 
+/**
+ * Structured logger with leveled output.
+ */
 export const logger = {
-  error: (message: string, meta?: unknown) => {
+  /**
+   * Log an error message.
+   * @param {string} message - Log message.
+   * @param {unknown} meta - Optional metadata.
+   */
+  error: (message, meta) => {
     if (shouldLog("error")) {
       console.error(formatMessage("error", message, meta));
     }
   },
-  warn: (message: string, meta?: unknown) => {
+  /**
+   * Log a warning message.
+   * @param {string} message - Log message.
+   * @param {unknown} meta - Optional metadata.
+   */
+  warn: (message, meta) => {
     if (shouldLog("warn")) {
       console.warn(formatMessage("warn", message, meta));
     }
   },
-  info: (message: string, meta?: unknown) => {
+  /**
+   * Log an info message.
+   * @param {string} message - Log message.
+   * @param {unknown} meta - Optional metadata.
+   */
+  info: (message, meta) => {
     if (shouldLog("info")) {
       console.info(formatMessage("info", message, meta));
     }
   },
-  debug: (message: string, meta?: unknown) => {
+  /**
+   * Log a debug message.
+   * @param {string} message - Log message.
+   * @param {unknown} meta - Optional metadata.
+   */
+  debug: (message, meta) => {
     if (shouldLog("debug")) {
       console.debug(formatMessage("debug", message, meta));
     }
