@@ -1,0 +1,23 @@
+{
+  "name": "sportwebapp-backend",
+  "version": "1.0.0",
+  "description": "Production-ready Node.js + Express backend with JavaScript, MySQL, and Redis.",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node src/server.js",
+    "start": "node src/server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.11.0",
+    "redis": "^4.7.0",
+    "zod": "^3.23.8"
+  }
+}
